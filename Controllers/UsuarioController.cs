@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MyFinance.Models;
+using System;
 
 namespace MyFinance.Controllers
 {
@@ -7,8 +9,18 @@ namespace MyFinance.Controllers
     {
         public object TempView { get; private set; }
 
-        public IActionResult Login()
+        [HttpGet]
+        public IActionResult Login(int? id)
         {
+            if(id != null)
+            {
+                if(id == 0)
+                {
+                    HttpContext.Session.SetString("NomeUsuarioLogado", string.Empty);
+                    HttpContext.Session.SetString("IdUsuarioLogado", string.Empty);
+                }
+            }
+
             return View();
         }
 
@@ -18,6 +30,8 @@ namespace MyFinance.Controllers
             bool login = usuario.ValidarLogin();
             if(login)
             {
+                HttpContext.Session.SetString("NomeUsuarioLogado", usuario.Nome);
+                HttpContext.Session.SetString("IdUsuarioLogado", usuario.Id.ToString());
                 return RedirectToAction("Index", "Home");
             }
             else
