@@ -22,6 +22,11 @@ namespace MyFinance.Util
             connection.Open();
         }
 
+        internal DataTable RetDataTable()
+        {
+            throw new NotImplementedException();
+        }
+
         // EXECUTA SELECTs
         public DataTable RetDataTable(string sql)
         {
