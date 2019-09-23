@@ -42,8 +42,24 @@ namespace MyFinance.Controllers
         }
 
         [HttpPost]
-        [HttpGet]
         public IActionResult Registrar(UsuarioModel usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                //Registrar usuário
+                usuario.RegistrarUsuario();
+                return RedirectToAction("Sucesso");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Registrar()
+        {
+            return View();
+        }
+
+        public IActionResult Sucesso()
         {
             return View();
         }
