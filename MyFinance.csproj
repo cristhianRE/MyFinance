@@ -11,4 +11,13 @@
     <PackageReference Include="MySql.Data" Version="8.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Transacao\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PlanoConta\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -45,5 +45,10 @@ namespace MyFinance.Controllers
         {
             return View();
         }
+
+        public IActionResult Ajuda()
+        {
+            return View();
+        }
     }
 }
