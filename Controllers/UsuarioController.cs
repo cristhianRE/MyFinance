@@ -32,7 +32,7 @@ namespace MyFinance.Controllers
             {
                 HttpContext.Session.SetString("NomeUsuarioLogado", usuario.Nome);
                 HttpContext.Session.SetString("IdUsuarioLogado", usuario.Id.ToString());
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Menu", "Home");
             }
             else
             {
