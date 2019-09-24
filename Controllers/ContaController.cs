@@ -18,5 +18,32 @@ namespace MyFinance.Controllers
             ViewBag.ListaConta = objConta.ListaConta();
             return View();
         }
+
+        [HttpPost]
+        public IActionResult CriarConta(ContaModel formulario)
+        {
+            if (ModelState.IsValid)
+            {
+                formulario.HttpContextAccessor = HttpContextAccessor;
+                formulario.Insert();
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult CriarConta()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ExcluirConta(int id)
+        {
+            ContaModel objConta = new ContaModel(HttpContextAccessor);
+            objConta.Excluir(id);
+            return RedirectToAction("Index");
+        }
     }
 }
