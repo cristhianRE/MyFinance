@@ -43,7 +43,7 @@ namespace MyFinance.Models
                 item = new ContaModel();
                 item.Id = int.Parse(dt.Rows[i]["ID"].ToString());
                 item.Nome = dt.Rows[i]["Nome"].ToString();
-                item.Saldo = Double.Parse(dt.Rows[i]["Saldo"].ToString());
+                item.Saldo = double.Parse(dt.Rows[i]["Saldo"].ToString());
                 item.Usuario_Id = int.Parse(dt.Rows[i]["USUARIO_ID"].ToString());
                 lista.Add(item);
             }

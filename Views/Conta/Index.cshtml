@@ -23,7 +23,7 @@
                     <td><button type="button" class="btn-danger" onclick="Excluir(@item.Id.ToString())">Excluir</button></td>
                     <td>@item.Id.ToString()</td>
                     <td>@item.Nome.ToString()</td>
-                    <td>R$ @item.Saldo.ToString()</td>
+                    <td>@item.Saldo.ToString().Replace("R", "Receita").Replace("D", "Despesa")</td>
                 </tr>
             </tbody>
         }
