@@ -28,7 +28,7 @@ namespace MyFinance.Models
             HttpContextAccessor = httpContextAccessor;
         }
 
-        public List<ContaModel> ListaConta()
+        public List<ContaModel> ListaContas()
         {
             List<ContaModel> lista = new List<ContaModel>();
             ContaModel item;

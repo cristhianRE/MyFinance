@@ -15,7 +15,7 @@ namespace MyFinance.Controllers
         public IActionResult Index()
         {
             ContaModel objConta = new ContaModel(HttpContextAccessor);
-            ViewBag.ListaConta = objConta.ListaConta();
+            ViewBag.ListaConta = objConta.ListaContas();
             return View();
         }
 
