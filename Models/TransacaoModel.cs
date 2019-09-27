@@ -58,7 +58,7 @@ namespace MyFinance.Models
 
             if (Conta_Id != 0)
             {
-                    filtro += $" and t.Conta_Id = '{Conta_Id}' ";
+                filtro += $" and t.Conta_Id = '{Conta_Id}' ";
             }
             //Fim
 
@@ -103,18 +103,18 @@ namespace MyFinance.Models
             DAL objDAL = new DAL();
             DataTable dt = objDAL.RetDataTable(sql);
 
-                item = new TransacaoModel();
-                item.Id = int.Parse(dt.Rows[0]["Id"].ToString());
-                item.Data = DateTime.Parse(dt.Rows[0]["Data"].ToString()).ToString("dd/MM/yyyy");
-                item.Descricao = dt.Rows[0]["Historico"].ToString();
-                item.Conta_Id = int.Parse(dt.Rows[0]["Conta_Id"].ToString());
-                item.Valor = double.Parse(dt.Rows[0]["Valor"].ToString());
-                item.NomeConta = dt.Rows[0]["Conta"].ToString();
-                item.Tipo = dt.Rows[0]["Tipo"].ToString();
-                item.Plano_Contas_Id = int.Parse(dt.Rows[0]["Plano_Contas_Id"].ToString());
-                item.DescricaoPlanoConta = dt.Rows[0]["Plano_Conta"].ToString();
+            item = new TransacaoModel();
+            item.Id = int.Parse(dt.Rows[0]["Id"].ToString());
+            item.Data = DateTime.Parse(dt.Rows[0]["Data"].ToString()).ToString("dd/MM/yyyy");
+            item.Descricao = dt.Rows[0]["Historico"].ToString();
+            item.Conta_Id = int.Parse(dt.Rows[0]["Conta_Id"].ToString());
+            item.Valor = double.Parse(dt.Rows[0]["Valor"].ToString());
+            item.NomeConta = dt.Rows[0]["Conta"].ToString();
+            item.Tipo = dt.Rows[0]["Tipo"].ToString();
+            item.Plano_Contas_Id = int.Parse(dt.Rows[0]["Plano_Contas_Id"].ToString());
+            item.DescricaoPlanoConta = dt.Rows[0]["Plano_Conta"].ToString();
 
-                return item;
+            return item;
         }
 
         public void Insert()
@@ -146,6 +146,38 @@ namespace MyFinance.Models
         public void Excluir(int id)
         {
             new DAL().ExecutarComandoSQL("DELETE FROM TRANSACAO WHERE ID = " + id);
+        }
+    }
+
+    public class DashBoard
+    {
+        public double Total { get; set; }
+        public string PlanoConta { get; set; }
+
+        public List<DashBoard> RetornarDadosGraficoPie()
+        {
+            List<DashBoard> lista = new List<DashBoard>();
+            DashBoard item;
+
+            string sql = "select sum(t.Valor) as total, p.Descricao " +
+                         "from transacao as t " +
+                         "inner join plano_contas as p on t.Plano_Contas_Id = p.Id " +
+                         "where t.Tipo = 'D' " +
+                         "group by p.Descricao; ";
+
+            DAL objDAL = new DAL();
+            DataTable dt = new DataTable();
+            dt = objDAL.RetDataTable(sql);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                item = new DashBoard();
+                item.Total = double.Parse(dt.Rows[i]["Total"].ToString());
+                item.PlanoConta = dt.Rows[i]["Descricao"].ToString();
+                lista.Add(item);
+            }
+
+            return lista;
         }
     }
 }

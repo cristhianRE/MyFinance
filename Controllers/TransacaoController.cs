@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFinance.Models;
+using System;
+using System.Collections.Generic;
 
 namespace MyFinance.Controllers
 {
@@ -59,11 +61,6 @@ namespace MyFinance.Controllers
             return View();
         }
 
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult Excluir(int id)
         {
@@ -79,6 +76,28 @@ namespace MyFinance.Controllers
             formulario.HttpContextAccessor = HttpContextAccessor;
             ViewBag.ListaTransacao = formulario.ListaTransacao();
             ViewBag.ListaContas = new ContaModel(HttpContextAccessor).ListaContas();
+            return View();
+        }
+
+        public IActionResult DashBoard()
+        {
+            List<DashBoard> lista = new DashBoard().RetornarDadosGraficoPie();
+            string valores = "";
+            string labels = "";
+            string cores = "";
+            var random = new Random();
+            
+            for (int i = 0; i < lista.Count; i++)
+            {
+                valores += lista[i].Total.ToString() + ",";
+                labels += "'" + lista[i].PlanoConta.ToString() + "',";
+                cores += "'" + String.Format("#{0:X6}", random.Next(0x1000000)) + "',"; 
+            }
+
+            ViewBag.Cores = cores;
+            ViewBag.Valores = valores;
+            ViewBag.Labels = labels;
+
             return View();
         }
     }
