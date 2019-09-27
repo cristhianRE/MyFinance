@@ -71,5 +71,15 @@ namespace MyFinance.Controllers
             objTransacao.Excluir(id);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Extrato(TransacaoModel formulario)
+        {
+            formulario.HttpContextAccessor = HttpContextAccessor;
+            ViewBag.ListaTransacao = formulario.ListaTransacao();
+            ViewBag.ListaContas = new ContaModel(HttpContextAccessor).ListaContas();
+            return View();
+        }
     }
 }
