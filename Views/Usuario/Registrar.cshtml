@@ -1,7 +1,12 @@
 ﻿@model UsuarioModel
 
-<h3>Registrar minha conta</h3>
-<br />
+@{
+    Layout = "../Shared/_LayoutLogin.cshtml";
+}
+
+<div class="container" style="background-color:rgba(137, 149, 150, 0.30); border-radius: 10px; padding: 20px; width: 1130px;">
+    <h3>Registrar minha conta</h3>
+    <br />
     <form asp-controller="Usuario" asp-action="Registrar">
         <div class="form-group">
             <label for="email">Nome:</label>
@@ -24,5 +29,8 @@
             <span asp-validation-for="Data_Nascimento" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-block btn-success">Entrar</button>
+        <button type="submit" class="btn btn-block btn-success">Registrar</button>
+        <br />
+        <button type="button" class="btn btn-block btn-primary" onclick="javascript: window.location.href='../Usuario/Login'">Login</button>
     </form>
+</div>
