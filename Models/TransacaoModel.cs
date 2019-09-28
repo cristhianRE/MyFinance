@@ -24,6 +24,11 @@ namespace MyFinance.Models
 
         public IHttpContextAccessor HttpContextAccessor { get; set; }
 
+        public string IdUsuarioLogado()
+        {
+            return HttpContextAccessor.HttpContext.Session.GetString("IdUsuarioLogado");
+        }
+
         public TransacaoModel()
         {
         }
@@ -62,12 +67,11 @@ namespace MyFinance.Models
             }
             //Fim
 
-            string id_usuariologado = HttpContextAccessor.HttpContext.Session.GetString("IdUsuarioLogado");
             string sql = $" select t.Id, t.Data, t.Tipo, t.Valor, t.Descricao as historico, t.Conta_Id, " +
                          $" c.Nome as conta, t.Plano_Contas_Id, p.Descricao as plano_conta " +
                          $" from transacao as t inner join conta c on t.Conta_Id = c.Id inner join Plano_Contas as p " +
                          $" on t.Plano_Contas_Id = p.Id " +
-                         $" where t.Usuario_Id = {id_usuariologado} " +
+                         $" where t.Usuario_Id = {IdUsuarioLogado()} " +
                          $" {filtro} order by t.data desc limit 10";
             DAL objDAL = new DAL();
             DataTable dt = objDAL.RetDataTable(sql);
@@ -93,12 +97,11 @@ namespace MyFinance.Models
         {
             TransacaoModel item;
 
-            string id_usuariologado = HttpContextAccessor.HttpContext.Session.GetString("IdUsuarioLogado");
             string sql = $" select t.Id, t.Data, t.Tipo, t.Valor, t.Descricao as historico, t.Conta_Id, " +
                          $" c.Nome as conta, t.Plano_Contas_Id, p.Descricao as plano_conta " +
                          $" from transacao as t inner join conta c on t.Conta_Id = c.Id inner join Plano_Contas as p " +
                          $" on t.Plano_Contas_Id = p.Id " +
-                         $" where t.Usuario_Id = {id_usuariologado} " +
+                         $" where t.Usuario_Id = {IdUsuarioLogado()} " +
                          $" and t.Id = {id}";
             DAL objDAL = new DAL();
             DataTable dt = objDAL.RetDataTable(sql);
@@ -119,13 +122,12 @@ namespace MyFinance.Models
 
         public void Insert()
         {
-            string id_usuariologado = HttpContextAccessor.HttpContext.Session.GetString("IdUsuarioLogado");
-            string sql;
+           string sql;
 
             if (Id == 0)
             {
                 sql = $"INSERT INTO TRANSACAO (DATA, TIPO, DESCRICAO, VALOR, CONTA_ID, PLANO_CONTAS_ID, USUARIO_ID) " +
-                      $" VALUES('{DateTime.Parse(Data).ToString("yyyy/MM/dd")}', '{Tipo}', '{Descricao}', '{Valor}', '{Conta_Id}', '{Plano_Contas_Id}', '{id_usuariologado}')";
+                      $" VALUES('{DateTime.Parse(Data).ToString("yyyy/MM/dd")}', '{Tipo}', '{Descricao}', '{Valor}', '{Conta_Id}', '{Plano_Contas_Id}', '{IdUsuarioLogado()}')";
             }
             else
             {
@@ -136,7 +138,7 @@ namespace MyFinance.Models
                       $" VALOR = '{Valor}', " +
                       $" CONTA_ID = '{Conta_Id}', " +
                       $" PLANO_CONTAS_ID = '{Plano_Contas_Id}' " +
-                      $" WHERE USUARIO_ID = '{id_usuariologado}' AND ID = '{Id}'";
+                      $" WHERE USUARIO_ID = '{IdUsuarioLogado()}' AND ID = '{Id}'";
             }
 
             DAL objDAL = new DAL();
@@ -154,16 +156,33 @@ namespace MyFinance.Models
         public double Total { get; set; }
         public string PlanoConta { get; set; }
 
+        public IHttpContextAccessor HttpContextAccessor { get; set; }
+
+        public string IdUsuarioLogado()
+        {
+            return HttpContextAccessor.HttpContext.Session.GetString("IdUsuarioLogado");
+        }
+
+        public DashBoard()
+        {
+        }
+
+        // Recebe o contexto para acesso ás variáveis de sessão.
+        public DashBoard(IHttpContextAccessor httpContextAccessor)
+        {
+            HttpContextAccessor = httpContextAccessor;
+        }
+
         public List<DashBoard> RetornarDadosGraficoPie()
         {
             List<DashBoard> lista = new List<DashBoard>();
             DashBoard item;
 
-            string sql = "select sum(t.Valor) as total, p.Descricao " +
-                         "from transacao as t " +
-                         "inner join plano_contas as p on t.Plano_Contas_Id = p.Id " +
-                         "where t.Tipo = 'D' " +
-                         "group by p.Descricao; ";
+            string sql = $" select sum(t.Valor) as total, p.Descricao " +
+                         $" from transacao as t " +
+                         $" inner join plano_contas as p on t.Plano_Contas_Id = p.Id " +
+                         $" where t.Tipo = 'D' and t.Usuario_id = '{IdUsuarioLogado()}' " +
+                         $" group by p.Descricao; ";
 
             DAL objDAL = new DAL();
             DataTable dt = new DataTable();
