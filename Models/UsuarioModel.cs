@@ -14,6 +14,8 @@ namespace MyFinance.Models
         [Required(ErrorMessage = "Informe seu Nome!")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "Informe seu Email!")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "O e-mail informado é inválido!")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Informe sua Senha!")]
         public string Senha { get; set; }
